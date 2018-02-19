@@ -28,6 +28,28 @@ class App extends Component {
       outputRange: [HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT],
       extrapolate: "clamp"
     });
+
+    const profileImageHeight = this.state.scrollY.interpolate({
+      inputRange: [0, HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT],
+      outputRange: [PROFILE_IMAGE_MAX_HEIGHT, PROFILE_IMAGE_MIN_HEIGHT],
+      extrapolate: "clamp"
+    });
+
+    const profileImageMarginTop = this.state.scrollY.interpolate({
+      inputRange: [0, HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT],
+      outputRange: [
+        HEADER_MAX_HEIGHT - PROFILE_IMAGE_MAX_HEIGHT / 2,
+        HEADER_MAX_HEIGHT + 5
+      ],
+      extrapolate: "clamp"
+    });
+
+    const headerZindex = this.state.scrollY.interpolate({
+      inputRange: [0, HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT],
+      outputRange: [0, 1],
+      extrapolate: "clamp"
+    });
+
     return (
       <View style={{ flex: 1 }}>
         <Animated.View
@@ -37,7 +59,8 @@ class App extends Component {
             left: 0,
             right: 0,
             backgroundColor: "lightskyblue",
-            height: headerHeight
+            height: headerHeight,
+            zIndex: headerZindex
           }}
         />
 
@@ -48,15 +71,15 @@ class App extends Component {
             { nativeEvent: { contentOffset: { y: this.state.scollY } } }
           ])}
         >
-          <View
+          <Animated.View
             style={{
-              height: PROFILE_IMAGE_MAX_HEIGHT,
-              width: PROFILE_IMAGE_MAX_HEIGHT,
+              height: profileImageHeight,
+              width: profileImageHeight,
               borderRadius: PROFILE_IMAGE_MAX_HEIGHT / 2,
               borderColor: "white",
               borderWidth: 3,
               overflow: "hidden",
-              marginTop: HEADER_MAX_HEIGHT - [PROFILE_IMAGE_MAX_HEIGHT / 2],
+              marginTop: profileImageMarginTop,
               marginLeft: 10
             }}
           >
@@ -64,7 +87,7 @@ class App extends Component {
               source={require("./assets/profile.jpeg")}
               style={{ flex: 1, width: null, height: null }}
             />
-          </View>
+          </Animated.View>
           <View>
             <Text
               style={{
