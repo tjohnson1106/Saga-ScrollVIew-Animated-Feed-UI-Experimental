@@ -50,6 +50,21 @@ class App extends Component {
       extrapolate: "clamp"
     });
 
+    const headerTitleBottom = this.state.scrollY.interpolate({
+      inputRange: [
+        0,
+        HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT,
+        HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT + 5 + PROFILE_IMAGE_MIN_HEIGHT,
+        HEADER_MAX_HEIGHT -
+          HEADER_MIN_HEIGHT +
+          5 +
+          PROFILE_IMAGE_MIN_HEIGHT +
+          26
+      ],
+      outputRange: [-20, -20, -20, 0],
+      extrapolate: "clamp"
+    });
+
     return (
       <View style={{ flex: 1 }}>
         <Animated.View
@@ -60,9 +75,18 @@ class App extends Component {
             right: 0,
             backgroundColor: "lightskyblue",
             height: headerHeight,
-            zIndex: headerZindex
+            zIndex: headerZindex,
+            alignItems: "center"
           }}
-        />
+        >
+          <Animated.View
+            style={{ position: "absolute", bottom: headerTitleBottom }}
+          >
+            <Text
+              style={{ color: "white", fontSize: 14, fontWeight: "bold" }}
+            />
+          </Animated.View>
+        </Animated.View>
 
         <ScrollView
           style={{ flex: 1 }}
